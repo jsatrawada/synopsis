@@ -1,0 +1,17 @@
+fastapi
+uvicorn
+PyPDF2
+chromadb
+pydantic
+httpx
+numpy
+scikit-learn
+openai
+python-dotenv
+langchain
+streamlit
+python-multipart
+langchain-community
+langchain-openai
+langchain-chroma
+pypdf
