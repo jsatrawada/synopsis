@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Form
+from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import shutil
 import os
@@ -27,8 +27,8 @@ app.add_middleware(
 async def ingest_pdf(file: UploadFile = File(...)):
     os.makedirs(PUBLICATIONS_DIR, exist_ok=True)
     file_location = os.path.join(PUBLICATIONS_DIR, str(file.filename))
-    # with open(file_location, "wb") as f:
-    #     shutil.copyfileobj(file.file, f)
+    with open(file_location, "wb") as f:
+        shutil.copyfileobj(file.file, f)
     chunks = process_pdf(file_location)
     count = add_embeddings(chunks)
     return {"message": f"Processed and added {count} chunks", "filename": file.filename}
@@ -61,5 +61,15 @@ async def generate_evidence(question: str = Form(...)):
 @app.post("/clear_vector_store/")
 async def clear_store():
     clear_vector_store()
+    try:
+        for filename in os.listdir(PUBLICATIONS_DIR):
+            file_path = os.path.join(PUBLICATIONS_DIR, filename)
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        return {"message": "All files deleted successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error deleting files: {str(e)}")
     return {"message": "Vector store cleared successfully"}
     
