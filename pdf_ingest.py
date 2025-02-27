@@ -10,9 +10,6 @@ from vector_store import vector_store
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 
-# Initialize embedding model
-from pydantic import SecretStr
-
 def process_pdf(file: str):
     loader = PyPDFLoader(file)
     loaded_documents = loader.load()

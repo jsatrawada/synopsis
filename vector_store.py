@@ -32,7 +32,7 @@ def add_embeddings(chunks):
     vector_store.add_texts(texts=texts, metadata=[{"source": chunk.metadata["source"]} for chunk in chunks])
     return len(texts)
 
-def search(question, k=5):
+def search_vector_store(question, k=5):
     query_embedding = embeddings_model.embed_query(question)
     """
     Searches the Chroma vector store using a query embedding and returns the top k relevant document texts.

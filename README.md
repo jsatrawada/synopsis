@@ -1,14 +1,14 @@
-
+FastAPI application using the Uvicorn ASGI
+This application UI is https://github.com/jsatrawada/synopsis-gen-ui
 - `app.py`: Entry point for running the FastAPI server.
 - `config.py`: Configuration file for environment variables and settings.
 - `pdf_ingest.py`: Handles PDF processing and chunking.
 - `query.py`: Defines the FastAPI endpoints for PDF ingestion, evidence generation, and clearing the vector store.
 - `requirements.txt`: Lists the dependencies required for the project.
-- `streamlit_app.py`: Streamlit frontend for interacting with the FastAPI backend.
 - `utils.py`: Contains utility functions.
 - `vector_store.py`: Manages the ChromaDB vector store for storing and searching document embeddings.
 
-## Setup
+## Setup in local
 
 1. Clone the repository:
     ```sh
@@ -28,26 +28,14 @@
     ```
 
 4. Set up environment variables:
-    - Create a `.env` file in the root directory.
-    - Add the  variablesfollowing:
-        ```
-        OPENAI_API_KEY=<your_openai_api_key>
-        VECTOR_STORE_PATH=./vector_store
-        ```
+    # Add enviorment variable for open_api_key
+    export OPENAI_API_KEY= <Oen API key>
+
 5. Command to run the FastAPI application using the Uvicorn ASGI 
+    In Local
     - uvicorn app:app --reload
 
-## Running the Application
 
-1. Start the FastAPI server:
-    ```sh
-    python [app.py](http://_vscodecontentref_/8)
-    ```
-
-2. Start the Streamlit application:
-    ```sh
-    streamlit run [streamlit_app.py](http://_vscodecontentref_/9)
-    ```
 
 ## API Endpoints
 
@@ -58,11 +46,10 @@
 - **Clear Vector Store**: `POST /clear_vector_store/`
     - Clear the vector store and delete all stored files.
 
-## Usage
-
-1. Open the Streamlit application in your browser.
-2. Use the sidebar to upload PDF files and manage the vector store.
-3. Enter a question in the main interface to generate evidence-based answers.
+## Usage in local
+Need to set up and run the streamlit app 
+Look at the ReadMe in https://github.com/jsatrawada/synopsis-gen-ui
+streamlit run streamlit_app.py  
 
 ## License
 

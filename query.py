@@ -5,10 +5,11 @@ import os
 import openai
 from pdf_ingest import process_pdf
 from openai import OpenAI
-from vector_store import search
+from vector_store import search_vector_store
 from vector_store import add_embeddings, clear_vector_store
 from langchain_openai import OpenAIEmbeddings
 from config import OPENAI_API_KEY, PUBLICATIONS_DIR
+from system_prompt_config import DEFAULT_SYSTEM_PROMPT
 
 from vector_store import vector_store
 
@@ -34,9 +35,12 @@ async def ingest_pdf(file: UploadFile = File(...)):
     return {"message": f"Processed and added {count} chunks", "filename": file.filename}
 
 @app.post("/generate_evidence/")
-async def generate_evidence(question: str = Form(...)):
-    
-    retrieved_chunks = search(question,5)
+async def generate_evidence(question: str = Form(...), system_prompt: str = Form(None)):
+    print(f"Question: {question}")
+    if system_prompt is None:
+        system_prompt = DEFAULT_SYSTEM_PROMPT
+        
+    retrieved_chunks = search_vector_store(question,5)
     context = "\n".join(retrieved_chunks)
     prompt = (
         f"Using the following context, answer the question:\n\n"
@@ -44,11 +48,12 @@ async def generate_evidence(question: str = Form(...)):
         f"Question: {question}\n\n"
         f"Answer:"
     )
+    print(f"System Prompt: {system_prompt}")
     client = OpenAI(api_key=OPENAI_API_KEY)
     completion = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant."},
+            {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt}
         ],
         max_tokens=150,
