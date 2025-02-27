@@ -27,8 +27,8 @@ def add_embeddings(chunks):
     Each chunk should have a `page_content` attribute containing the text.
     """
     texts = [chunk.page_content for chunk in chunks]
-    for chunk in chunks:
-        print(f"Chunk metadata: {chunk.metadata}")    
+    # for chunk in chunks:
+    #     print(f"Chunk metadata: {chunk.metadata}")    
     vector_store.add_texts(texts=texts, metadata=[{"source": chunk.metadata["source"]} for chunk in chunks])
     return len(texts)
 

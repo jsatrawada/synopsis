@@ -19,7 +19,7 @@ def process_pdf(file: str):
     documents = []
     # print(f"Number of loaded_documents: {len(loaded_documents)}")
     for doc in loaded_documents:
-        print(f"Document metadata: {doc.metadata}")
+        # print(f"Document metadata: {doc.metadata}")
         documents.append(Document(page_content=doc.page_content, metadata={"source": doc.metadata}))
        
     splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
