@@ -56,7 +56,7 @@ async def generate_evidence(question: str = Form(...), system_prompt: str = Form
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": prompt}
         ],
-        max_tokens=150,
+        max_tokens=15000,
         temperature=0.2,
     )
 
